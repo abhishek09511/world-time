@@ -1,5 +1,5 @@
 {
   "projects": {
-    "default": "world-time-app"
+    "default": "world-time-clk-app"
   }
 }
