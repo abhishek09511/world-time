@@ -3,7 +3,7 @@ import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import { getTimeData, getCurrentUtcOffset } from '../utils/timezones'
 
-export default function ClockCard({ timezone, isSelected, onSelect, onRemove, use12Hour, dragId }) {
+export default function ClockCard({ timezone, isSelected, onSelect, onRemove, use12Hour, dragId, offsetMinutes = 0 }) {
   const [timeData, setTimeData] = useState(() => getTimeData(timezone.id))
 
   const {
@@ -23,11 +23,18 @@ export default function ClockCard({ timezone, isSelected, onSelect, onRemove, us
   }
 
   useEffect(() => {
-    const interval = setInterval(() => {
+    if (offsetMinutes === 0) {
       setTimeData(getTimeData(timezone.id))
-    }, 1000)
-    return () => clearInterval(interval)
-  }, [timezone.id])
+      const interval = setInterval(() => {
+        setTimeData(getTimeData(timezone.id))
+      }, 1000)
+      return () => clearInterval(interval)
+    } else {
+      const ref = new Date(Date.now() + offsetMinutes * 60000)
+      ref.setSeconds(0, 0)
+      setTimeData(getTimeData(timezone.id, ref))
+    }
+  }, [timezone.id, offsetMinutes])
 
   const currentOffset = getCurrentUtcOffset(timezone.id)
 

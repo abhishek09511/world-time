@@ -5,6 +5,7 @@ import Header from './components/Header'
 import ClockCard from './components/ClockCard'
 import AddTimezoneModal from './components/AddTimezoneModal'
 import WorldMap from './components/WorldMap'
+import TimeOffsetSlider from './components/TimeOffsetSlider'
 import { DEFAULT_TIMEZONES } from './utils/timezones'
 
 const STORAGE_KEY_ZONES = 'worldtime-zones'
@@ -49,6 +50,7 @@ export default function App() {
   const [theme, setTheme] = useState(loadTheme)
   const [isDark, setIsDark] = useState(loadDark)
   const [use12Hour, setUse12Hour] = useState(load12Hour)
+  const [offsetMinutes, setOffsetMinutes] = useState(0)
 
   // Drag sensor with activation distance to distinguish click from drag
   const sensors = useSensors(
@@ -155,6 +157,7 @@ export default function App() {
                     onSelect={handleSelect}
                     onRemove={handleRemove}
                     use12Hour={use12Hour}
+                    offsetMinutes={offsetMinutes}
                   />
                 ))}
               </div>
@@ -162,6 +165,11 @@ export default function App() {
           </DndContext>
         )}
       </main>
+
+      {/* Time offset slider */}
+      {timezones.length > 0 && (
+        <TimeOffsetSlider value={offsetMinutes} onChange={setOffsetMinutes} />
+      )}
 
       {/* World Map */}
       <WorldMap selectedTimezoneId={selectedTimezoneId} timezones={timezones} />

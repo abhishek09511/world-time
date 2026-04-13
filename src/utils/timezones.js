@@ -144,8 +144,8 @@ export const ALL_TIMEZONES = [
 ].map((tz) => ({ ...tz, key: `${tz.city}-${tz.id}` }))
 
 // Get current time data for a timezone
-export function getTimeData(timezoneId) {
-  const now = new Date()
+export function getTimeData(timezoneId, refDate) {
+  const now = refDate ?? new Date()
 
   const timeFormatter = new Intl.DateTimeFormat('en-US', {
     timeZone: timezoneId,
